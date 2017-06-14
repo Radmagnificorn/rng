@@ -9,6 +9,7 @@ public class NameDocument {
     private List<String> titles;
     private List<String> prefixes;
     private List<String> postfixes;
+    private List<String> items;
 
     public NameDocument() {
     }
@@ -35,5 +36,13 @@ public class NameDocument {
 
     public void setPostfixes(List<String> postfixes) {
         this.postfixes = postfixes;
+    }
+
+    public List<String> getItems() {
+        return items;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
     }
 }

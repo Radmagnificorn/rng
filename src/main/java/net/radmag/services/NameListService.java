@@ -1,13 +1,14 @@
 package net.radmag.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.radmag.model.Character;
 import net.radmag.model.NameDocument;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
@@ -20,16 +21,16 @@ public class NameListService {
 
     private NameDocument nameDoc;
 
-    private String cachedName;
+    private Character cachedCharacter;
 
     public NameListService() {
         loadLists();
-        generateCachedName();
+        generateCachedCharacter();
     }
 
     private void loadLists() {
         try {
-            File nameDocFile = new ClassPathResource("names.json").getFile();
+            InputStream nameDocFile = new ClassPathResource("names.json").getInputStream();
 
             ObjectMapper mapper = new ObjectMapper();
 
@@ -40,9 +41,9 @@ public class NameListService {
         }
     }
 
-    @Scheduled(cron = "*/5 33 14 * * *")
-    private void generateCachedName() {
-        cachedName = getRandomTitle() + " " + getRandomPrefix() + " " + getRandomPostfix();
+    @Scheduled(cron = "0 0 0 * * *")
+    private void generateCachedCharacter() {
+        cachedCharacter = getFullCharacter();
     }
 
     public String getRandomTitle() {
@@ -57,13 +58,23 @@ public class NameListService {
         return getRandomElement(nameDoc.getPostfixes());
     }
 
-    public String getCachedName() {
-        return cachedName;
+    public String getRandomItem() {
+        return getRandomElement(nameDoc.getItems());
+    }
+
+    public Character getCachedCharacter() {
+        return cachedCharacter;
     }
 
     private String getRandomElement(List<String> list) {
         Random rnd = new Random();
         return list.get(rnd.nextInt(list.size()));
+    }
+
+    public Character getFullCharacter() {
+        String name = (getRandomTitle() + " " + getRandomPrefix() + " " + getRandomPostfix()).trim();
+        String item = (getRandomPrefix() + " " + getRandomItem()).trim();
+        return new Character(name, item);
     }
 
 
