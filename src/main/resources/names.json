@@ -1,0 +1,5 @@
+{
+  "titles" : ["", "Dr.", "Mr.", "Mrs.", "The", "Sister", "Father", "Brother", "Mother"],
+  "prefixes": ["Red", "Yellow", "Blue", "Green", "Orange", "Sapphire", "Rocket", "Robo", "Mechanical", "Gentle", "Tiny", "Rainbow", "Diamond", "Ghost", "Spectral", "Shiny", "Dead", "Living", "Buttery", "Royal", "Maximum", "Cocky", "Arrogant", "Sad", "Happy", "Mournful", "Morning", "Night", "Dark", "Light", "Black", "White", "Fleshy", "Rotting", "Urban", "Country", "Pasta"],
+  "postfixes": ["Warrior", "Flash", "Lady", "Vampire", "Hostess", "Gentleman", "Jester", "Cowboy", "Owl", "Hawk", "Boxer", "Soldier", "Slammer", "Monk", "Nun", "Priest", "Bishop", "Knight", "Ghost", "Spirit", "Revenant", "Wraith", "Specter", "Nurse", "Driver", "Bot", "Robot", "Ninja", "Samurai", "Diver", "Patriot", "King", "Prince", "Princess"]
+}
