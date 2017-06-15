@@ -41,7 +41,7 @@ public class NameListService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "*/5 * 14 * * *", zone = "GMT-5:00")
     private void generateCachedCharacter() {
         cachedCharacter = getFullCharacter();
     }
@@ -59,7 +59,7 @@ public class NameListService {
     }
 
     public String getRandomItem() {
-        return getRandomElement(nameDoc.getItems());
+        return getRandomElement(nameDoc.getFeatures());
     }
 
     public Character getCachedCharacter() {
