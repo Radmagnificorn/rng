@@ -58,7 +58,7 @@ public class NameListService {
         return getRandomElement(nameDoc.getPostfixes());
     }
 
-    public String getRandomItem() {
+    public String getRandomFeature() {
         return getRandomElement(nameDoc.getFeatures());
     }
 
@@ -67,13 +67,28 @@ public class NameListService {
     }
 
     private String getRandomElement(List<String> list) {
-        Random rnd = new Random();
+        return getRandomElement(list, new Random());
+    }
+
+    private String getRandomElement(List<String> list, Random rnd) {
         return list.get(rnd.nextInt(list.size()));
     }
 
     public Character getFullCharacter() {
         String name = (getRandomTitle() + " " + getRandomPrefix() + " " + getRandomPostfix()).trim();
-        String item = (getRandomPrefix() + " " + getRandomItem()).trim();
+        String item = (getRandomPrefix() + " " + getRandomFeature()).trim();
+        return new Character(name, item);
+    }
+
+    public Character getFullCharacterSeeded(String seedName) {
+        long seed = seedName.chars().reduce(1, (a,b) -> a + b * 2);
+        Random rnd = new Random(seed);
+
+        String name = (getRandomElement(nameDoc.getTitles(), rnd) + " "
+                + getRandomElement(nameDoc.getPrefixes(), rnd) + " "
+                + getRandomElement(nameDoc.getPostfixes(), rnd)).trim();
+        String item = (getRandomElement(nameDoc.getPrefixes(), rnd) + " "
+                + getRandomElement(nameDoc.getFeatures(), rnd)).trim();
         return new Character(name, item);
     }
 

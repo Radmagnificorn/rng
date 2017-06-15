@@ -4,6 +4,7 @@ package net.radmag.controllers;
 import net.radmag.model.Character;
 import net.radmag.services.NameListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,14 +23,19 @@ public class RandomNameController {
         this.nls = nameListService;
     }
 
-    @RequestMapping(value = "rng/character", method = RequestMethod.GET)
+    @RequestMapping(value = "character", method = RequestMethod.GET)
     public Character getName() {
        return nls.getFullCharacter();
     }
 
-    @RequestMapping(value = "rng/character/daily", method = RequestMethod.GET)
+    @RequestMapping(value = "character/daily", method = RequestMethod.GET)
     public Character getDailyName() {
         return nls.getCachedCharacter();
+    }
+
+    @RequestMapping(value = "character/name/{name}", method = RequestMethod.GET)
+    public Character getCharacterByName(@PathVariable String name) {
+        return nls.getFullCharacterSeeded(name);
     }
 
 
