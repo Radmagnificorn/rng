@@ -30,7 +30,7 @@ public class RandomNameController {
 
     @RequestMapping(value = "character/daily", method = RequestMethod.GET)
     public Character getDailyName() {
-        return nls.getCachedCharacter();
+        return nls.getDailyCharacter();
     }
 
     @RequestMapping(value = "character/name/{name}", method = RequestMethod.GET)

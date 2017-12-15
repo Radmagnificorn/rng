@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 
@@ -90,6 +94,16 @@ public class NameListService {
         String item = (getRandomElement(nameDoc.getPrefixes(), rnd) + " "
                 + getRandomElement(nameDoc.getFeatures(), rnd)).trim();
         return new Character(name, item);
+    }
+
+    public Character getDailyCharacter() {
+        return this.getFullCharacterSeeded(NameListService.getDailySeed());
+    }
+
+    private static String getDailySeed() {
+        ZonedDateTime date = Instant.now().atZone(ZoneId.of("America/New_York"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return formatter.format(date);
     }
 
 
