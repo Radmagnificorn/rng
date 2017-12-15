@@ -5,9 +5,9 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
 fetch("/character").then(function (response) {
-    response.then(function (data) {
-        alert(data);
-    })
+    response.json().then(function (data) {
+        alert(data.name);
+    });
 });
 
 ReactDOM.render(<App />, document.getElementById('root'));
