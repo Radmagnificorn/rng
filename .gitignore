@@ -2,3 +2,4 @@
 target
 /client/npm-debug.log
 /src/main/resources/public/*
+*.iml
