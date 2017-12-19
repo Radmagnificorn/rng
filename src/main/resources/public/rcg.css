@@ -1,0 +1,13 @@
+body {
+    font-family: Arial, Helvetica, SansSerif;
+    text-align: center;
+}
+
+#character-display {
+    border-style: solid;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+    width: 600px;
+    margin: 20px auto;
+}
