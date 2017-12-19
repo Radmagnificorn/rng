@@ -79,6 +79,7 @@ var App = /** @class */ (function () {
     App.prototype.init = function () {
         this.characterDisplay = document.getElementById("character-display");
         this.nameBox = document.getElementById("by-name-name");
+        this.historyDisplay = document.getElementById("history-list");
         this.setUpDaily();
         this.setUpRandom();
         this.setUpByName();
@@ -113,6 +114,12 @@ var App = /** @class */ (function () {
     };
     App.prototype.setCharacterDisplay = function (value, caller) {
         this.characterDisplay.innerText = caller + ": " + value;
+        this.appendToHistory(value);
+    };
+    App.prototype.appendToHistory = function (entry) {
+        var li = document.createElement("li");
+        li.innerText = entry;
+        this.historyDisplay.insertAdjacentElement('afterbegin', li);
     };
     return App;
 }());

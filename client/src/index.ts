@@ -7,6 +7,7 @@ class App {
 
     characterDisplay: HTMLDivElement;
     nameBox: HTMLInputElement;
+    historyDisplay: HTMLUListElement;
 
     constructor(repo: CharacterRepository) {
         this.repo = repo;
@@ -16,6 +17,7 @@ class App {
     private init() {
         this.characterDisplay = <HTMLDivElement> document.getElementById("character-display");
         this.nameBox = <HTMLInputElement> document.getElementById("by-name-name");
+        this.historyDisplay = <HTMLUListElement> document.getElementById("history-list");
         this.setUpDaily();
         this.setUpRandom();
         this.setUpByName();
@@ -51,6 +53,13 @@ class App {
 
     private setCharacterDisplay(value: string, caller: string) {
         this.characterDisplay.innerText = caller + ": " + value;
+        this.appendToHistory(value);
+    }
+
+    private appendToHistory(entry: string) {
+        let li = <HTMLLIElement> document.createElement("li");
+        li.innerText = entry;
+        this.historyDisplay.insertAdjacentElement('afterbegin', li);
     }
 }
 

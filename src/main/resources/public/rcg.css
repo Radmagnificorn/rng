@@ -11,3 +11,18 @@ body {
     width: 600px;
     margin: 20px auto;
 }
+
+.history {
+    width: 600px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #cccccc;
+    color: #777777;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+#history-list {
+    list-style: none;
+    text-align: left;
+}
