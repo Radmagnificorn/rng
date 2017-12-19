@@ -46,14 +46,14 @@ class App {
         byNameButton.addEventListener("click", (e: Event) => {
             let name = this.nameBox.value;
             this.repo.getCharacterFromName(name).then((character: Character) => {
-                this.setCharacterDisplay(character.toString(), "byName");
+                this.setCharacterDisplay(character.toString(), name);
             });
         });
     }
 
     private setCharacterDisplay(value: string, caller: string) {
-        this.characterDisplay.innerText = caller + ": " + value;
-        this.appendToHistory(value);
+        this.characterDisplay.innerText = value;
+        this.appendToHistory(caller + ": " + value);
     }
 
     private appendToHistory(entry: string) {

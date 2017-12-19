@@ -108,13 +108,13 @@ var App = /** @class */ (function () {
         byNameButton.addEventListener("click", function (e) {
             var name = _this.nameBox.value;
             _this.repo.getCharacterFromName(name).then(function (character) {
-                _this.setCharacterDisplay(character.toString(), "byName");
+                _this.setCharacterDisplay(character.toString(), name);
             });
         });
     };
     App.prototype.setCharacterDisplay = function (value, caller) {
-        this.characterDisplay.innerText = caller + ": " + value;
-        this.appendToHistory(value);
+        this.characterDisplay.innerText = value;
+        this.appendToHistory(caller + ": " + value);
     };
     App.prototype.appendToHistory = function (entry) {
         var li = document.createElement("li");
