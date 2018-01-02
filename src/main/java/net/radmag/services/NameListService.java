@@ -28,13 +28,20 @@ public class NameListService {
     private Character cachedCharacter;
 
     public NameListService() {
-        loadLists();
-        generateCachedCharacter();
+        loadLists("names.json");
     }
 
-    private void loadLists() {
+    public NameListService(String listFileName) {
+        loadLists(listFileName);
+    }
+
+    public NameListService(NameDocument nameDoc) {
+        this.nameDoc = nameDoc;
+    }
+
+    private void loadLists(String listFileName) {
         try {
-            InputStream nameDocFile = new ClassPathResource("names.json").getInputStream();
+            InputStream nameDocFile = new ClassPathResource(listFileName).getInputStream();
 
             ObjectMapper mapper = new ObjectMapper();
 
@@ -45,10 +52,6 @@ public class NameListService {
         }
     }
 
-    @Scheduled(cron = "*/5 * 14 * * *", zone = "GMT-5:00")
-    private void generateCachedCharacter() {
-        cachedCharacter = getFullCharacter();
-    }
 
     public String getRandomTitle() {
         return getRandomElement(nameDoc.getTitles());
@@ -107,4 +110,13 @@ public class NameListService {
     }
 
 
+    public boolean prefixExists(String prefix) {
+        String cleanPrefix = prefix.toLowerCase().trim();
+        return nameDoc.getPrefixes().stream().anyMatch(p -> p.toLowerCase().equals(cleanPrefix));
+    }
+
+    public boolean postfixExists(String postfix) {
+        String cleanPostfix = postfix.toLowerCase().trim();
+        return nameDoc.getPostfixes().stream().anyMatch(p -> p.toLowerCase().equals(cleanPostfix));
+    }
 }
