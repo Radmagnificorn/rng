@@ -10,7 +10,8 @@ body {
     font-weight: bold;
     text-align: center;
     width: 90%;
-    margin: 20px auto;
+    margin: 0 auto;
+    height: 2em;
 }
 #generation-options {
     margin: 0 auto;
@@ -19,9 +20,13 @@ body {
     font-size: 2em;
     font-weight: bold;
     width: 50%;
-    height: 50px;
+    height: 3em;
     padding: 10px;
     text-align: center;
+}
+
+#generation-options input {
+    padding: 0;
 }
 
 .history {
@@ -31,7 +36,7 @@ body {
 }
 
 #history-list {
-    font-size: 2em;
+    font-size: 1em;
     list-style: none;
     text-align: center;
 }
