@@ -44,16 +44,25 @@ class App {
     private setUpByName() {
         let byNameButton = document.getElementById("by-name");
         byNameButton.addEventListener("click", (e: Event) => {
-            let name = this.nameBox.value;
-            this.repo.getCharacterFromName(name).then((character: Character) => {
-                this.setCharacterDisplay(character.toString(), name);
-            });
+            this.submitName();
+        });
+        this.nameBox.addEventListener('keyup', (event: KeyboardEvent) => {
+            if (event.keyCode === 13) {
+                this.submitName();
+            }
+        });
+    }
+
+    private submitName() {
+        let name = this.nameBox.value;
+        this.repo.getCharacterFromName(name).then((character: Character) => {
+            this.setCharacterDisplay(character.toString(), name);
         });
     }
 
     private setCharacterDisplay(value: string, caller: string) {
         this.characterDisplay.innerText = value;
-        this.appendToHistory(caller + ": " + value);
+        this.appendToHistory(caller.toUpperCase() + ": " + value);
     }
 
     private appendToHistory(entry: string) {

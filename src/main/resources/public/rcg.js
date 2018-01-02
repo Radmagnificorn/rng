@@ -106,15 +106,24 @@ var App = /** @class */ (function () {
         var _this = this;
         var byNameButton = document.getElementById("by-name");
         byNameButton.addEventListener("click", function (e) {
-            var name = _this.nameBox.value;
-            _this.repo.getCharacterFromName(name).then(function (character) {
-                _this.setCharacterDisplay(character.toString(), name);
-            });
+            _this.submitName();
+        });
+        this.nameBox.addEventListener('keyup', function (event) {
+            if (event.keyCode === 13) {
+                _this.submitName();
+            }
+        });
+    };
+    App.prototype.submitName = function () {
+        var _this = this;
+        var name = this.nameBox.value;
+        this.repo.getCharacterFromName(name).then(function (character) {
+            _this.setCharacterDisplay(character.toString(), name);
         });
     };
     App.prototype.setCharacterDisplay = function (value, caller) {
         this.characterDisplay.innerText = value;
-        this.appendToHistory(caller + ": " + value);
+        this.appendToHistory(caller.toUpperCase() + ": " + value);
     };
     App.prototype.appendToHistory = function (entry) {
         var li = document.createElement("li");
