@@ -24,4 +24,9 @@ public class Character {
     public void setKeyFeature(String keyFeature) {
         this.keyFeature = keyFeature;
     }
+
+    @Override
+    public String toString() {
+        return name + " with the " + keyFeature;
+    }
 }

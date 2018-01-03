@@ -100,10 +100,10 @@ public class NameListService {
     }
 
     public Character getDailyCharacter() {
-        return this.getFullCharacterSeeded(NameListService.getDailySeed());
+        return this.getFullCharacterSeeded(getDailySeed());
     }
 
-    private static String getDailySeed() {
+    protected String getDailySeed() {
         ZonedDateTime date = Instant.now().atZone(ZoneId.of("America/New_York"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return formatter.format(date);
