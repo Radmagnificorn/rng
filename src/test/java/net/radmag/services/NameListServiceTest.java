@@ -26,8 +26,27 @@ public class NameListServiceTest {
     }
 
     @Test
-    public void testPrefixExists() {
+    public void findExistingPrefixInList() {
         assertTrue(nls.prefixExists("Red"));
         assertFalse(nls.prefixExists("Green"));
+    }
+
+    @Test
+    public void findExistingPostfixInList() {
+        assertTrue(nls.postfixExists("Man"));
+        assertFalse(nls.postfixExists("Horn"));
+    }
+
+    @Test
+    public void findExistingFeatureInList() {
+        assertTrue(nls.featureExists("Bow"));
+        assertFalse(nls.featureExists("Guitar"));
+    }
+
+    @Test
+    public void listSearchesAreNotCaseSensitive() {
+        assertTrue(nls.prefixExists("YELLOW"));
+        assertTrue(nls.postfixExists("WOMAN"));
+        assertTrue(nls.featureExists("HAT"));
     }
 }

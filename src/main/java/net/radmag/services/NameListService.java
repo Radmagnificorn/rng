@@ -119,4 +119,9 @@ public class NameListService {
         String cleanPostfix = postfix.toLowerCase().trim();
         return nameDoc.getPostfixes().stream().anyMatch(p -> p.toLowerCase().equals(cleanPostfix));
     }
+
+    public boolean featureExists(String feature) {
+        String cleanFeature = feature.toLowerCase().trim();
+        return nameDoc.getFeatures().stream().anyMatch(f -> f.toLowerCase().equals(cleanFeature));
+    }
 }
