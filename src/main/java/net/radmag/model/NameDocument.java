@@ -14,6 +14,13 @@ public class NameDocument {
     public NameDocument() {
     }
 
+    public NameDocument(List<String> titles, List<String> prefixes, List<String> postfixes, List<String> features) {
+        this.titles = titles;
+        this.prefixes = prefixes;
+        this.postfixes = postfixes;
+        this.features = features;
+    }
+
     public List<String> getTitles() {
         return titles;
     }

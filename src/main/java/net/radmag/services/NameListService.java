@@ -3,6 +3,9 @@ package net.radmag.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.radmag.model.Character;
 import net.radmag.model.NameDocument;
+import net.radmag.model.Word;
+import net.radmag.repositories.WordRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Created by Stephen on 6/13/2017.
@@ -25,10 +29,32 @@ public class NameListService {
 
     private NameDocument nameDoc;
 
-    private Character cachedCharacter;
+    private WordRepository wordRepository;
 
-    public NameListService() {
-        loadLists("names.json");
+    @Autowired
+    public NameListService(WordRepository wordRepository) {
+
+        this.wordRepository = wordRepository;
+        testSetup();
+        this.nameDoc = loadRepoWords();
+    }
+
+    private void testSetup() {
+        wordRepository.deleteAll();
+        wordRepository.save(new Word("the", "title"));
+        wordRepository.save(new Word("red", "prefix"));
+        wordRepository.save(new Word("yellow", "prefix"));
+        wordRepository.save(new Word("man", "postfix"));
+        wordRepository.save(new Word("woman", "postfix"));
+    }
+
+    private NameDocument loadRepoWords() {
+        List<String> titles = wordRepository.findByType("title").stream().map(Word::getWord).collect(Collectors.toList());
+        List<String> prefixes = wordRepository.findByType("prefix").stream().map(Word::getWord).collect(Collectors.toList());
+        List<String> postfixes = wordRepository.findByType("postfix").stream().map(Word::getWord).collect(Collectors.toList());
+        List<String> features = wordRepository.findByType("feature").stream().map(Word::getWord).collect(Collectors.toList());
+
+        return new NameDocument(titles, prefixes, postfixes, features);
     }
 
     public NameListService(String listFileName) {
@@ -67,10 +93,6 @@ public class NameListService {
 
     public String getRandomFeature() {
         return getRandomElement(nameDoc.getFeatures());
-    }
-
-    public Character getCachedCharacter() {
-        return cachedCharacter;
     }
 
     private String getRandomElement(List<String> list) {
