@@ -1,11 +1,12 @@
 package net.radmag.controllers;
 
+import net.radmag.model.Word;
+import net.radmag.repositories.WordRepository;
 import net.radmag.services.NameListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AdministrativeController {
@@ -17,13 +18,17 @@ public class AdministrativeController {
         this.nls = nls;
     }
 
-    @RequestMapping(value = "prefix/{prefix}/exists", method = RequestMethod.GET)
-    public boolean prefixExists(@PathVariable String prefix) {
-        return nls.prefixExists(prefix);
+    @RequestMapping(value = "administer/lists/{list}/{word}", method = RequestMethod.GET)
+    public boolean wordExistsInList(@PathVariable String list, @PathVariable String word) {
+        return nls.wordExistsInList(word, list);
     }
 
-    @RequestMapping(value = "postfix/{postfix}/exists", method = RequestMethod.GET)
-    public boolean postfixExists(@PathVariable String postfix) {
-        return nls.postfixExists(postfix);
+    @RequestMapping(value = "administer/lists", method = RequestMethod.POST)
+    public String addWord(@RequestBody Word word) {
+        if (nls.saveWord(word.getWord(), word.getType())) {
+            return "added";
+        } else {
+            return "not added";
+        }
     }
 }

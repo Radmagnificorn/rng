@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -31,21 +32,18 @@ public class NameListService {
 
     private WordRepository wordRepository;
 
+    private static final List<String> VALID_LISTS = Arrays.asList(new String[] {
+            "title",
+            "prefix",
+            "postfix",
+            "feature"
+    });
+
     @Autowired
     public NameListService(WordRepository wordRepository) {
 
         this.wordRepository = wordRepository;
-        testSetup();
         this.nameDoc = loadRepoWords();
-    }
-
-    private void testSetup() {
-        wordRepository.deleteAll();
-        wordRepository.save(new Word("the", "title"));
-        wordRepository.save(new Word("red", "prefix"));
-        wordRepository.save(new Word("yellow", "prefix"));
-        wordRepository.save(new Word("man", "postfix"));
-        wordRepository.save(new Word("woman", "postfix"));
     }
 
     private NameDocument loadRepoWords() {
@@ -80,19 +78,19 @@ public class NameListService {
 
 
     public String getRandomTitle() {
-        return getRandomElement(nameDoc.getTitles());
+        return getRandomElement(loadListOfWords("title"));
     }
 
     public String getRandomPrefix() {
-        return getRandomElement(nameDoc.getPrefixes());
+        return getRandomElement(loadListOfWords("prefix"));
     }
 
     public String getRandomPostfix() {
-        return getRandomElement(nameDoc.getPostfixes());
+        return getRandomElement(loadListOfWords("postfix"));
     }
 
     public String getRandomFeature() {
-        return getRandomElement(nameDoc.getFeatures());
+        return getRandomElement(loadListOfWords("feature"));
     }
 
     private String getRandomElement(List<String> list) {
@@ -100,7 +98,11 @@ public class NameListService {
     }
 
     private String getRandomElement(List<String> list, Random rnd) {
-        return list.get(rnd.nextInt(list.size()));
+        if (list != null && list.size() > 0) {
+            return list.get(rnd.nextInt(list.size()));
+        } else {
+            return "";
+        }
     }
 
     public Character getFullCharacter() {
@@ -113,11 +115,13 @@ public class NameListService {
         long seed = seedName.chars().reduce(1, (a,b) -> a + b * 2);
         Random rnd = new Random(seed);
 
-        String name = (getRandomElement(nameDoc.getTitles(), rnd) + " "
-                + getRandomElement(nameDoc.getPrefixes(), rnd) + " "
-                + getRandomElement(nameDoc.getPostfixes(), rnd)).trim();
-        String item = (getRandomElement(nameDoc.getPrefixes(), rnd) + " "
-                + getRandomElement(nameDoc.getFeatures(), rnd)).trim();
+        List<String> prefixes = loadListOfWords("prefix");
+
+        String name = (getRandomElement(loadListOfWords("title"), rnd) + " "
+                + getRandomElement(prefixes, rnd) + " "
+                + getRandomElement(loadListOfWords("postfix"), rnd)).trim();
+        String item = (getRandomElement(prefixes, rnd) + " "
+                + getRandomElement(loadListOfWords("feature"), rnd)).trim();
         return new Character(name, item);
     }
 
@@ -145,5 +149,31 @@ public class NameListService {
     public boolean featureExists(String feature) {
         String cleanFeature = feature.toLowerCase().trim();
         return nameDoc.getFeatures().stream().anyMatch(f -> f.toLowerCase().equals(cleanFeature));
+    }
+
+    public boolean isValidList(String listName) {
+        return isInList(listName, VALID_LISTS);
+    }
+
+    public boolean wordExistsInList(String word, String listName) {
+        return (isValidList(listName) && isInList(word, loadListOfWords(listName)));
+    }
+
+    private List<String> loadListOfWords(String listName) {
+        return wordRepository.findByType(listName).stream().map(Word::getWord).collect(Collectors.toList());
+    }
+
+    private boolean isInList(String word, List<String> list) {
+        String cleanWord = word.toLowerCase().trim();
+        return list.stream().anyMatch(lWord -> lWord.toLowerCase().equals(word));
+    }
+
+    public boolean saveWord(String word, String listName) {
+        if (isValidList(listName) && !wordExistsInList(word, listName)) {
+            wordRepository.save(new Word(word.toLowerCase(), listName));
+            return true;
+        } else {
+            return false;
+        }
     }
 }
