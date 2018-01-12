@@ -25,10 +25,14 @@ public class AdministrativeController {
 
     @RequestMapping(value = "administer/lists", method = RequestMethod.POST)
     public String addWord(@RequestBody Word word) {
-        if (nls.saveWord(word.getWord(), word.getType())) {
-            return "added";
+        if (NameListService.isValidWord(word)) {
+            if (nls.saveWord(word.getWord(), word.getType())) {
+                return "added " + word.getWord() + " to " + word.getType();
+            } else {
+                return "could not add " + word.getWord() + " to " + word.getType();
+            }
         } else {
-            return "not added";
+            return "invalid submission";
         }
     }
 }

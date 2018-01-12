@@ -151,6 +151,15 @@ public class NameListService {
         return nameDoc.getFeatures().stream().anyMatch(f -> f.toLowerCase().equals(cleanFeature));
     }
 
+    public static boolean isValidWord(Word word) {
+        try {
+            return word.getWord() != null && !word.getWord().equals("")
+                    && word.getType() != null && !word.getType().equals("");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public boolean isValidList(String listName) {
         return isInList(listName, VALID_LISTS);
     }
