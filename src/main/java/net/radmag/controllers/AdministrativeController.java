@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.View;
+import org.springframework.ui.Model;
 
 @RestController
 public class AdministrativeController {
@@ -18,12 +20,12 @@ public class AdministrativeController {
         this.nls = nls;
     }
 
-    @RequestMapping(value = "administer/lists/{list}/{word}", method = RequestMethod.GET)
+    @RequestMapping(value = "admin/lists/{list}/{word}", method = RequestMethod.GET)
     public boolean wordExistsInList(@PathVariable String list, @PathVariable String word) {
         return nls.wordExistsInList(word, list);
     }
 
-    @RequestMapping(value = "administer/lists", method = RequestMethod.POST)
+    @RequestMapping(value = "admin/lists", method = RequestMethod.POST)
     public String addWord(@RequestBody Word word) {
         if (NameListService.isValidWord(word)) {
             if (nls.saveWord(word.getWord(), word.getType())) {
@@ -35,4 +37,5 @@ public class AdministrativeController {
             return "invalid submission";
         }
     }
+
 }

@@ -12,8 +12,9 @@
             type: listName
         };
 
-        return fetch('administer/lists', {
+        return fetch('/admin/lists', {
             method: 'post',
+            credentials: 'same-origin',
             headers: {
                 'accept': 'application/json',
                 'Content-Type': 'application/json'
