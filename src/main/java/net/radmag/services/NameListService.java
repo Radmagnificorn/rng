@@ -207,7 +207,13 @@ public class NameListService {
             boolean isSaved = saveWord(word.getWord(), word.getType());
             return !isSaved ? Stream.of(word.getWord()) : Stream.empty();
         }).collect(Collectors.toList());
+    }
 
+    public List<String> addWordsToList(String type, List<String> words) {
+        return words.stream().flatMap(word -> {
+            boolean isSaved = saveWord(word, type);
+            return !isSaved ? Stream.of(word) : Stream.empty();
+        }).collect(Collectors.toList());
     }
 
     public List<Word> getDatabaseBackup() {

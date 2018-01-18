@@ -47,6 +47,11 @@ public class AdministrativeController {
         return "Failed to save the following words: " + failedSaves.toString();
     }
 
+    @PostMapping(value = "admin/lists/{list}")
+    public List<String> addList(@PathVariable String list, @RequestBody List<String> newWords) {
+        return nls.addWordsToList(list, newWords);
+    }
+
 
     @DeleteMapping(value = "admin/lists")
     public boolean deleteAll() {
