@@ -185,4 +185,21 @@ public class NameListService {
             return false;
         }
     }
+
+    public boolean deleteAll() {
+        try {
+            wordRepository.deleteAll();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean deleteWord(String type, String word) {
+        return wordRepository.deleteWordByTypeAndWord(type, word) != null;
+    }
+
+    public boolean deleteList(String list) {
+        return wordRepository.deleteWordsByType(list).size() > 0;
+    }
 }

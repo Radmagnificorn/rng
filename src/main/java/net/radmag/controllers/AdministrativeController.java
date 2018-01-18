@@ -38,4 +38,19 @@ public class AdministrativeController {
         }
     }
 
+    @DeleteMapping(value = "admin/lists")
+    public boolean deleteAll() {
+        return nls.deleteAll();
+    }
+
+    @DeleteMapping(value = "admin/lists/{list}")
+    public boolean deleteList(@PathVariable String list) {
+        return nls.deleteList(list);
+    }
+
+    @DeleteMapping(value = "admin/lists/{list}/{word}")
+    public boolean deleteWord(@PathVariable String list, @PathVariable String word) {
+        return nls.deleteWord(list, word);
+    }
+
 }
