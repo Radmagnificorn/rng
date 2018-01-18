@@ -48,8 +48,8 @@ public class AdministrativeController {
     }
 
     @PostMapping(value = "admin/lists/{list}")
-    public List<String> addList(@PathVariable String list, @RequestBody List<String> newWords) {
-        return nls.addWordsToList(list, newWords);
+    public String addList(@PathVariable String list, @RequestBody List<String> newWords) {
+        return "Failed to save the following words: " + nls.addWordsToList(list, newWords).toString();
     }
 
 

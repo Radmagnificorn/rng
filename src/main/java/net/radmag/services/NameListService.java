@@ -177,7 +177,7 @@ public class NameListService {
     }
 
     public boolean saveWord(String word, String listName) {
-        if (isValidList(listName) && !wordExistsInList(word, listName)) {
+        if (isValidList(listName) && !wordExistsInList(word.toLowerCase(), listName)) {
             wordRepository.save(new Word(word.toLowerCase(), listName));
             return true;
         } else {
