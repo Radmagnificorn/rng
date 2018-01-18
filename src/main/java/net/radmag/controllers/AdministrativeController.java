@@ -1,5 +1,6 @@
 package net.radmag.controllers;
 
+import net.radmag.model.NameDocument;
 import net.radmag.model.Word;
 import net.radmag.repositories.WordRepository;
 import net.radmag.services.NameListService;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.View;
 import org.springframework.ui.Model;
+
+import java.util.List;
 
 @RestController
 public class AdministrativeController {
@@ -38,19 +41,31 @@ public class AdministrativeController {
         }
     }
 
+    @PostMapping(value = "admin/bulk_upload")
+    public String bulkUpload(@RequestBody List<Word> upload) {
+        List<String> failedSaves = nls.addWordsFromBulkUpload(upload);
+        return "Failed to save the following words: " + failedSaves.toString();
+    }
+
+
     @DeleteMapping(value = "admin/lists")
     public boolean deleteAll() {
         return nls.deleteAll();
     }
 
     @DeleteMapping(value = "admin/lists/{list}")
-    public boolean deleteList(@PathVariable String list) {
-        return nls.deleteList(list);
+    public String deleteList(@PathVariable String list) {
+        return nls.deleteList(list) ? "deleted " + list : "delete failed";
     }
 
     @DeleteMapping(value = "admin/lists/{list}/{word}")
-    public boolean deleteWord(@PathVariable String list, @PathVariable String word) {
-        return nls.deleteWord(list, word);
+    public String deleteWord(@PathVariable String list, @PathVariable String word) {
+        return nls.deleteWord(list, word) ? String.format("deleted %s from %s", word, list) : "delete failed";
+    }
+
+    @GetMapping(value = "admin/backup")
+    public List<Word> databaseBackup() {
+        return nls.getDatabaseBackup();
     }
 
 }

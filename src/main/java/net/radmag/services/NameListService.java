@@ -16,10 +16,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by Stephen on 6/13/2017.
@@ -201,5 +200,19 @@ public class NameListService {
 
     public boolean deleteList(String list) {
         return wordRepository.deleteWordsByType(list).size() > 0;
+    }
+
+    public List<String> addWordsFromBulkUpload(List<Word> upload) {
+        return upload.stream().flatMap(word -> {
+            boolean isSaved = saveWord(word.getWord(), word.getType());
+            return !isSaved ? Stream.of(word.getWord()) : Stream.empty();
+        }).collect(Collectors.toList());
+
+    }
+
+    public List<Word> getDatabaseBackup() {
+        List<Word> backup = new ArrayList<>();
+        wordRepository.findAll().iterator().forEachRemaining(backup::add);
+        return backup;
     }
 }
