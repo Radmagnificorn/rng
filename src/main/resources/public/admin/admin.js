@@ -25,18 +25,21 @@
     }
     
     function deleteWord(listName, word) {
-        let deleteUrl = '/admin/lists/' + listName;
-        if (word) {
-            deleteUrl += '/' + word;
+        if (listName && word) {
+            let deleteUrl = '/admin/lists/' + listName + "/" + word;
+            return fetch(deleteUrl, {
+                method: 'delete',
+                credentials: 'same-origin',
+                headers: {
+                    'accept': 'application/json',
+                    "Content-Type": 'application/json'
+                }
+            }).then(response => {
+                return response.text()
+            });
+        } else {
+            return Promise.resolve("please provide both a list and a word");
         }
-        return fetch(deleteUrl, {
-            method: 'delete',
-            credentials: 'same-origin',
-            headers: {
-                'accept': 'application/json',
-                "Content-Type": 'application/json'
-            }
-        }).then(response => {return response.text()});
     }
     
     function addWord() {
@@ -57,7 +60,9 @@
     listInput.addEventListener('keypress', keypressEvent);
     addButton.addEventListener('click', (e) => addWord());
     removeButton.addEventListener('click', (e) => {
-        responseDisplay.innerText = deleteWord(listInput.value, wordInput.value);
+        deleteWord(listInput.value, wordInput.value).then(respText => {
+            responseDisplay.innerText = respText;
+        });
     });
 
 
