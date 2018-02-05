@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: {
+        rcg: './src/index.ts',
+        admin: './src/admin.js'
+    },
     module: {
         rules: [
             {
@@ -15,7 +18,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     output: {
-        filename: 'rcg.js',
-        path: path.resolve('../src/main/resources', 'public')
+        filename: '[name].js',
+        path: path.resolve('../src/main/resources/public', 'resources')
     }
 };
