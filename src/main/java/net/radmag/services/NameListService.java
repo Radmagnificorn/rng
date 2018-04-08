@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -112,6 +113,10 @@ public class NameListService {
 
     public Character getFullCharacterSeeded(String seedName) {
         long seed = seedName.chars().reduce(1, (a,b) -> a + b * 2);
+        return getFullCharacterSeeded(seed);
+    }
+
+    public Character getFullCharacterSeeded(long seed) {
         Random rnd = new Random(seed);
 
         List<String> prefixes = loadListOfWords("prefix");
@@ -128,10 +133,9 @@ public class NameListService {
         return this.getFullCharacterSeeded(getDailySeed());
     }
 
-    protected String getDailySeed() {
+    protected long getDailySeed() {
         ZonedDateTime date = Instant.now().atZone(ZoneId.of("America/New_York"));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return formatter.format(date);
+        return date.truncatedTo(ChronoUnit.DAYS).toEpochSecond();
     }
 
 
