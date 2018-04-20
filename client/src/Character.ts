@@ -11,7 +11,7 @@ class Character implements RawCharacter {
     }
 
     toString(): string {
-        return this.name.toUpperCase() + "\nfeaturing | " + this.keyFeature;
+        return `${this.name.toUpperCase()}\nwith the ${this.keyFeature}`;
     }
 }
 

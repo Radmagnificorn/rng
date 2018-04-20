@@ -3,29 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <style>
         .inputContainer {
             margin-bottom: 10px;
         }
+
+        input, select {
+            width: 100%;
+        }
+
+        .container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
-    <div class="inputContainer">
-        <label for="word">Word</label><br/>
-        <input type="text" id="word" name="word"/>
+    <div class="container">
+        <div class="inputContainer">
+            <label for="word">Word</label><br/>
+            <input type="text" id="word" name="word"/>
+        </div>
+        <div class="inputContainer">
+            <label for="list">List</label><br/>
+            <select id="list" name="list">
+                <option value="prefix">prefix</option>
+                <option value="postfix">postfix</option>
+                <option value="feature">feature</option>
+            </select>
+        </div>
+        <button id="addWord">Add</button>
+        <button id="removeWord">Remove</button>
+        <div id="responseDisplay"></div>
     </div>
-    <div class="inputContainer">
-        <label for="list">List</label><br/>
-        <select id="list" name="list">
-            <option value="prefix">prefix</option>
-            <option value="postfix">postfix</option>
-            <option value="feature">feature</option>
-        </select>
-    </div>
-    <button id="addWord">Add</button>
-    <button id="removeWord">Remove</button>
-    <div id="responseDisplay"></div>
 </body>
 <script src="resources/admin.js"></script>
 </html>

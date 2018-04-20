@@ -184,7 +184,7 @@ var Character = /** @class */ (function () {
         this.keyFeature = rawCharacter.keyFeature;
     }
     Character.prototype.toString = function () {
-        return this.name.toUpperCase() + "\nfeaturing | " + this.keyFeature;
+        return this.name.toUpperCase() + "\nwith the " + this.keyFeature;
     };
     return Character;
 }());
