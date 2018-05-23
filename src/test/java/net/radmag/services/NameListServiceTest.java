@@ -21,7 +21,7 @@ public class NameListServiceTest {
         nameDoc.setPrefixes(Arrays.asList(new String[] {"Red", "Yellow", "Blue"}));
         nameDoc.setPostfixes(Arrays.asList(new String[] {"Man", "Woman", "Child"}));
         nameDoc.setFeatures(Arrays.asList(new String[] {"Bow", "Sword", "Hat"}));
-        nameDoc.setTitles(Arrays.asList(new String[] {"The", "Some", "A"}));
+        nameDoc.setFeature_descriptions(Arrays.asList(new String[] {"The", "Some", "A"}));
         return nameDoc;
     }
 

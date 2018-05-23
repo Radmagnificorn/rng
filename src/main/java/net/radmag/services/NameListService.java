@@ -30,7 +30,7 @@ public class NameListService {
 
     private WordRepository wordRepository;
 
-    private static final List<String> VALID_LISTS = Arrays.asList(new String[] {
+    private static final List<String> VALID_LIST_NAMES = Arrays.asList(new String[] {
             "prefix",
             "postfix",
             "feature",
@@ -137,7 +137,7 @@ public class NameListService {
     }
 
     public boolean isValidList(String listName) {
-        return isInList(listName, VALID_LISTS);
+        return isInList(listName, VALID_LIST_NAMES);
     }
 
     public boolean wordExistsInList(String word, String listName) {
@@ -150,7 +150,7 @@ public class NameListService {
 
     private boolean isInList(String word, List<String> list) {
         String cleanWord = word.toLowerCase().trim();
-        return list.stream().anyMatch(lWord -> lWord.toLowerCase().equals(word));
+        return list.stream().anyMatch(lWord -> lWord.toLowerCase().equals(cleanWord));
     }
 
     public boolean saveWord(String word, String listName) {
@@ -172,7 +172,7 @@ public class NameListService {
     }
 
     public boolean deleteWord(String type, String word) {
-        return wordRepository.deleteWordByTypeAndWord(type, word) != null;
+        return wordRepository.deleteWordByTypeAndWord(type, word) > 0;
     }
 
     public boolean deleteList(String list) {

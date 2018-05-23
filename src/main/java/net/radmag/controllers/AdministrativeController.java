@@ -65,7 +65,7 @@ public class AdministrativeController {
 
     @DeleteMapping(value = "admin/lists/{list}/{word}")
     public String deleteWord(@PathVariable String list, @PathVariable String word) {
-        return nls.deleteWord(list, word) ? String.format("deleted %s from %s", word, list) : "delete failed";
+        return nls.deleteWord(list, word) ? String.format("deleted %s from %s", word, list) : "word does not exist";
     }
 
     @GetMapping(value = "admin/backup")
