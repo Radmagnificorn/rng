@@ -30,12 +30,12 @@ public class RandomNameControllerTest {
     public void getCharacterReturnsAValidCharacter() {
         NameListService nls = new NameListService(generateTestNameDoc());
         RandomNameController rnc = new RandomNameController(nls);
-        Character result = rnc.getName();
-        assertThat(result.getName(), anyOf(
+        Character result = rnc.getCharacter();
+        assertThat(result.getCharacter(), anyOf(
                 containsString("Red"),
                 containsString("Yellow"),
                 containsString("Blue")));
-        assertThat(result.getName(), anyOf(
+        assertThat(result.getCharacter(), anyOf(
                 containsString("Man"),
                 containsString("Woman"),
                 containsString("Child")));
@@ -50,13 +50,13 @@ public class RandomNameControllerTest {
     public void getCharacterReturnsARandomCharacter() {
         NameListService nls = new NameListService(generateTestNameDoc());
         RandomNameController rnc = new RandomNameController(nls);
-        Character result1 = rnc.getName();
-        Character result2 = rnc.getName();
-        Character result3 = rnc.getName();
+        Character result1 = rnc.getCharacter();
+        Character result2 = rnc.getCharacter();
+        Character result3 = rnc.getCharacter();
 
-        boolean allEqual = (result1.getName().equals(result2.getName())
+        boolean allEqual = (result1.getCharacter().equals(result2.getCharacter())
                 && result1.getKeyFeature().equals(result2.getKeyFeature())
-                && result2.getName().equals(result3.getName())
+                && result2.getCharacter().equals(result3.getCharacter())
                 && result2.getKeyFeature().equals(result3.getKeyFeature()));
 
         assertThat(allEqual, equalTo(false));
@@ -72,7 +72,7 @@ public class RandomNameControllerTest {
         };
 
         RandomNameController rnc = new RandomNameController(nls);
-        assertThat(rnc.getDailyName().toString(), equalTo("The Blue Man with the Yellow Hat"));
+        assertThat(rnc.getDailyCharacter().toString(), equalTo("The Blue Man with the Yellow Hat"));
     }
 
     @Test

@@ -24,18 +24,18 @@ public class RandomNameController {
     }
 
     @RequestMapping(value = "character", method = RequestMethod.GET)
-    public Character getName() {
+    public Character getCharacter() {
        return nls.getFullCharacter();
     }
 
     @RequestMapping(value = "character/daily", method = RequestMethod.GET)
-    public Character getDailyName() {
+    public Character getDailyCharacter() {
         return nls.getDailyCharacter();
     }
 
     @RequestMapping(value = "character/name/{name}", method = RequestMethod.GET)
     public Character getCharacterByName(@PathVariable String name) {
-        return nls.getFullCharacterSeeded(name);
+        return nls.getFullCharacter(name);
     }
 
 

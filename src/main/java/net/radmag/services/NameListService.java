@@ -7,7 +7,6 @@ import net.radmag.model.Word;
 import net.radmag.repositories.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.io.InputStream;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,10 +31,10 @@ public class NameListService {
     private WordRepository wordRepository;
 
     private static final List<String> VALID_LISTS = Arrays.asList(new String[] {
-            "title",
             "prefix",
             "postfix",
-            "feature"
+            "feature",
+            "feature_description"
     });
 
     @Autowired
@@ -47,12 +45,12 @@ public class NameListService {
     }
 
     private NameDocument loadRepoWords() {
-        List<String> titles = wordRepository.findByType("title").stream().map(Word::getWord).collect(Collectors.toList());
         List<String> prefixes = wordRepository.findByType("prefix").stream().map(Word::getWord).collect(Collectors.toList());
         List<String> postfixes = wordRepository.findByType("postfix").stream().map(Word::getWord).collect(Collectors.toList());
+        List<String> featureDescriptions = wordRepository.findByType("feature_descriptions").stream().map(Word::getWord).collect(Collectors.toList());
         List<String> features = wordRepository.findByType("feature").stream().map(Word::getWord).collect(Collectors.toList());
 
-        return new NameDocument(titles, prefixes, postfixes, features);
+        return new NameDocument(featureDescriptions, prefixes, postfixes, features);
     }
 
     public NameListService(String listFileName) {
@@ -76,27 +74,6 @@ public class NameListService {
         }
     }
 
-
-    public String getRandomTitle() {
-        return getRandomElement(loadListOfWords("title"));
-    }
-
-    public String getRandomPrefix() {
-        return getRandomElement(loadListOfWords("prefix"));
-    }
-
-    public String getRandomPostfix() {
-        return getRandomElement(loadListOfWords("postfix"));
-    }
-
-    public String getRandomFeature() {
-        return getRandomElement(loadListOfWords("feature"));
-    }
-
-    private String getRandomElement(List<String> list) {
-        return getRandomElement(list, new Random());
-    }
-
     private String getRandomElement(List<String> list, Random rnd) {
         if (list != null && list.size() > 0) {
             return list.get(rnd.nextInt(list.size()));
@@ -105,32 +82,28 @@ public class NameListService {
         }
     }
 
+    private static final long RANDOM = -1;
     public Character getFullCharacter() {
-        String name = (getRandomTitle() + " " + getRandomPrefix() + " " + getRandomPostfix()).trim();
-        String item = (getRandomPrefix() + " " + getRandomFeature()).trim();
-        return new Character(name, item);
+        return getFullCharacter(RANDOM);
     }
 
-    public Character getFullCharacterSeeded(String seedName) {
+    public Character getFullCharacter(String seedName) {
         long seed = seedName.chars().reduce(1, (a,b) -> a + b * 2);
-        return getFullCharacterSeeded(seed);
+        return getFullCharacter(seed);
     }
 
-    public Character getFullCharacterSeeded(long seed) {
-        Random rnd = new Random(seed);
+    public Character getFullCharacter(long seed) {
+        Random rnd = seed != RANDOM ? new Random(seed) : new Random();
 
-        List<String> prefixes = loadListOfWords("prefix");
-
-        String name = (getRandomElement(loadListOfWords("title"), rnd) + " "
-                + getRandomElement(prefixes, rnd) + " "
+        String name = (getRandomElement(loadListOfWords("prefix"), rnd) + " "
                 + getRandomElement(loadListOfWords("postfix"), rnd)).trim();
-        String item = (getRandomElement(prefixes, rnd) + " "
+        String item = (getRandomElement(loadListOfWords("feature_description"), rnd) + " "
                 + getRandomElement(loadListOfWords("feature"), rnd)).trim();
         return new Character(name, item);
     }
 
     public Character getDailyCharacter() {
-        return this.getFullCharacterSeeded(getDailySeed());
+        return this.getFullCharacter(getDailySeed());
     }
 
     protected long getDailySeed() {
